@@ -65,7 +65,12 @@ variables = {
         'Jet2_dR_lep' :{'name':'Jet2_trk08_dR_lep','title':'min #DeltaR(l,j2)','bin':50,'xmin':0,'xmax':5},
         'Jet3_dR_lep' :{'name':'Jet3_trk08_dR_lep','title':'min #DeltaR(l,j3)','bin':50,'xmin':0,'xmax':5},
         'Jet4_dR_lep' :{'name':'Jet4_trk08_dR_lep','title':'min #DeltaR(l,j4)','bin':50,'xmin':0,'xmax':5},
-#        'weight_2tagex' :{'name':'weight_2tagex','title':'TRF 2b-tags exclusive weight','bin':100,'xmin':0.,'xmax':1.}
+
+
+	'njets' :{'name':'numberOfJets','title':'number of jets','bin':12,'xmin':4,'xmax':16},
+	'nbjets':{'name':'numberOfBJets','title':'number of b-jets','bin':10,'xmin':0,'xmax':10},	
+	'ht'	:{'name':'Ht','title':'Ht','bin':65,'xmin':500,'xmax':7000},
+
 }
 
 variables2D = {}
@@ -85,13 +90,14 @@ signal_groups = collections.OrderedDict()
 signal_groups['tttt']  = ['mgp8_pp_tttt_5f']
 
 background_groups = collections.OrderedDict()
-background_groups['ttzbb']  = ['mgp8_pp_ttz_5f_zbb']
-background_groups['tthbb']  = ['mgp8_pp_tth01j_5f_hbb']
-background_groups['ttbb']   = ['mgp8_pp_ttbb_4f']
-background_groups['ttzz']   = ['mgp8_pp_ttzz_5f']
-background_groups['ttwz']   = ['mgp8_pp_ttwz_5f']
-background_groups['bbbbj']  = ['mgp8_pp_bbbbj_QCD']
-background_groups['ttww']   = ['mgp8_pp_ttww_4f']
+#@@
+#background_groups['ttzbb']  = ['mgp8_pp_ttz_5f_zbb']
+#background_groups['tthbb']  = ['mgp8_pp_tth01j_5f_hbb']
+#background_groups['ttbb']   = ['mgp8_pp_ttbb_4f']
+#background_groups['ttzz']   = ['mgp8_pp_ttzz_5f']
+#background_groups['ttwz']   = ['mgp8_pp_ttwz_5f']
+#background_groups['bbbbj']  = ['mgp8_pp_bbbbj_QCD']
+#background_groups['ttww']   = ['mgp8_pp_ttww_4f']
 
 # global parameters
 intLumi = 3.0e+07
@@ -104,17 +110,36 @@ uncertainties.append([0.02, 0.02])
 uncertainties.append([0.02, 0.10])
 
 # the first time needs to be set to True
-runFull = False
+#runFull = False
+runFull = True
 
 #####################
 # base pre-selections
 #####################
+
 selbase  = 'Jet1_trk08_SD_Corr_pt > 0. '
+
+selbase_ml = 'Ht > 500. && missingET > 40.'
+selbase_ml += '&& ( (SSee >0) || (SSem > 0) || (SSmm > 0) || (SSeee > 0) || (SSeem > 0) || (SSemm > 0) || (SSmmm > 0) )'
+
+selSR1 = selbase_ml + '&&((SSee >0) || (SSem > 0) || (SSmm > 0)) && numberOfBJets ==2 && numberOfJets>=6'
+selSR2 = selbase_ml + '&& ((SSee >0) || (SSem > 0) || (SSmm > 0)) && numberOfBJets >=3 && numberOfJets>=5'
+selSR3 = selbase_ml + '&& ((SSeee >0) || (SSeem > 0) || (SSemm > 0) || (SSmmm > 0)) && numberOfBJets ==2 && numberOfJets>=6'
+selSR4 = selbase_ml + '&& ((SSeee >0) || (SSeem > 0) || (SSemm > 0) || (SSmmm > 0)) && numberOfBJets >=3 && numberOfJets>=5'
+selSR5 = selbase_ml + '&& numberOfBJets >=4 && numberOfJets>=6'
+
 
 # add mass-dependent list of event #selections here if needed...
 
 selections = collections.OrderedDict()
 
 selections['tttt'] = []
-selections['tttt'].append(selbase)
+selections['tttt'].append(selbase_ml)
+selections['tttt'].append(selSR1)
+selections['tttt'].append(selSR2)
+selections['tttt'].append(selSR3)
+selections['tttt'].append(selSR4)
+selections['tttt'].append(selSR5)
+
+
 
