@@ -70,6 +70,8 @@ variables = {
 	'njets' :{'name':'numberOfJets','title':'number of jets','bin':12,'xmin':4,'xmax':16},
 	'nbjets':{'name':'numberOfBJets','title':'number of b-jets','bin':10,'xmin':0,'xmax':10},	
 	'ht'	:{'name':'Ht','title':'Ht','bin':65,'xmin':500,'xmax':7000},
+	'jet_pt':{'name':'Jet_pt','title':'Jet pt','bin':50,'xmin':0,'xmax':500},
+        'lep_pt':{'name':'Lep_pt','title':'Lepton pt','bin':50,'xmin':0,'xmax':500},
 
 }
 
